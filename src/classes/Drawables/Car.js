@@ -223,7 +223,6 @@ export default class Car extends Drawable {
 
     // Descobre deslocamento do carro
     let carMovement = this.edge.mapSpeed * deltaTime
-    debugger;
 
     // Descobre o destino nesta aresta
     // Se esse for o ultimo node, vai ate o ponto de projecao

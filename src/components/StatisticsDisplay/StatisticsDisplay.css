@@ -1,7 +1,7 @@
 .statistics {
     position: fixed;
   
-    top: 1rem;
+    top: 10rem;
     left: 1rem;
   
     display: flex;
@@ -12,10 +12,27 @@
   
     color: rgb(118, 118, 118);
   
-    z-index: 20;
     font-family: 'Share Tech Mono', monospace;
   
     pointer-events: none;
+  }
+
+  .sidemenu-statistics {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1rem;
+    width: 100%;
+    max-height: 300px;
+    overflow: scroll;
+  }
+
+  .statistic-title {
+    text-align: left;
+  }
+
+  .statistic-line {
+    width: 100%;
+    justify-content: space-between;
   }
   
   .statistics section {

@@ -4,6 +4,7 @@
   width: 20rem;
   height: 100vh;
   transition: 350ms;
+  z-index: 30;
 }
 
 .menu > div {

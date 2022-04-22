@@ -2,12 +2,18 @@ import './StatisticsDisplay.css'
 import { useEffect, useState } from 'react';
 import Statistics from '../../classes/Statistics';
 
-export default function StatisticsDisplay() {
+export default function StatisticsDisplay({ sideMenu = false }) {
 
-  const [timePickUp, setTimePickUp] = useState(0)
-  const [timeDelivery, setTimeDelivery] = useState(0)
-  const [longestPickUpTime, setLongestPickUpTime] = useState(0)
-  const [deviationPickUpTime, setDeviationPickUpTime] = useState(0);
+  const [statisticState, setStatisticState] = useState({
+    timePickUp: 0,
+    longestPickUpTime: 0,
+    shortestPickUpTime: 0,
+    deviationPickUpTime: 0,
+    timeDelivery: 0,
+    longestDeliveryTime: 0,
+    shortestDeliveryTime: 0,
+    deviationDeliveryTime: 0,
+  });
 
   // Se inscreve para manter o tempo atualizado
   useEffect(() => {
@@ -17,30 +23,37 @@ export default function StatisticsDisplay() {
 
   const userPickUpListener = () => {
     Statistics.addEventListener('userTimeToPickUpListener', (userTimes) => {
-      const sum = userTimes.reduce((partialSum, a) => partialSum + a, 0);
-      const mediumTime = sum/userTimes.length;
+    const sum = userTimes.reduce((partialSum, a) => partialSum + a, 0);
+    const mediumTime = sum/userTimes.length;
       
-      setTimePickUp(
-          Math.round((mediumTime) * 60).toLocaleString('pt-BR', {
-            minimumIntegerDigits: 2,
-            useGrouping: false,
-          })
-      )
+    const pickUpTime = Math.round((mediumTime) * 60).toLocaleString('pt-BR', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
 
-      const longestTime = Math.max.apply(Math, userTimes);
-      setLongestPickUpTime(
-        Math.round((longestTime) * 60).toLocaleString('pt-BR', {
-          minimumIntegerDigits: 2,
-          useGrouping: false,
-        })
-    )
+    let longestTime = Math.max.apply(Math, userTimes);
+    longestTime = Math.round((longestTime) * 60).toLocaleString('pt-BR', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    })
 
-        const deviation = calcDeviation(userTimes);
-        setDeviationPickUpTime(          
-          Math.round(deviation).toLocaleString('pt-BR', {
-            minimumIntegerDigits: 2,
-            useGrouping: false,
-        }))
+    let shortestTime = Math.min.apply(Math, userTimes);
+    shortestTime = Math.round((shortestTime) * 60).toLocaleString('pt-BR', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    })
+
+    let deviation = calcDeviation(userTimes);
+      deviation = Math.round(deviation).toLocaleString('pt-BR', {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+    })
+
+    setStatisticState(prevState => ({...prevState, 
+        timePickUp: pickUpTime,
+        longestPickUpTime: longestTime,
+        deviationPickUpTime: deviation,
+        shortestPickUpTime: shortestTime }))
     })
   }
 
@@ -49,12 +62,35 @@ export default function StatisticsDisplay() {
       const sum = userTimes.reduce((partialSum, a) => partialSum + a, 0);
       const mediumTime = sum/userTimes.length;
 
-      setTimeDelivery(
-          Math.round((mediumTime) * 60).toLocaleString('pt-BR', {
-            minimumIntegerDigits: 2,
-            useGrouping: false,
-          })
-      )
+      const deliveryTime = Math.round((mediumTime) * 60).toLocaleString('pt-BR', {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      });
+
+      let longestTime = Math.max.apply(Math, userTimes);
+      longestTime = Math.round((longestTime) * 60).toLocaleString('pt-BR', {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      })
+  
+      let shortestTime = Math.min.apply(Math, userTimes);
+      shortestTime = Math.round((shortestTime) * 60).toLocaleString('pt-BR', {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      })
+  
+      let deviation = calcDeviation(userTimes);
+        deviation = Math.round(deviation).toLocaleString('pt-BR', {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+      })
+
+      setStatisticState(prevState => ({...prevState, 
+        timeDelivery: deliveryTime,
+        longestDeliveryTime: longestTime,
+        deviationDeliveryTime: deviation,
+        shortestDeliveryTime: shortestTime }))
+
     })
   }
 
@@ -71,8 +107,8 @@ export default function StatisticsDisplay() {
   const showStatistic = (title, content) => {
     if (content !== null || content !== undefined) {
       return(
-        <section>
-          <span>{title}</span>
+        <section className="statistic-line">
+          <span className="statistic-title">{title}</span>
           <span>{content}</span>
         </section>
       );
@@ -80,13 +116,26 @@ export default function StatisticsDisplay() {
     return <></>;
   }
 
+  if (sideMenu) {
+    return (
+      <div className="sidemenu-statistics">
+        {showStatistic("Tempo médio para embarque:", `${statisticState.timePickUp}m`)}
+        {showStatistic("Maior tempo de espera para embarque:", `${statisticState.longestPickUpTime}m`)}
+        {showStatistic("Menor tempo de espera para embarque:", `${statisticState.shortestPickUpTime}m`)}
+        {showStatistic("Desvio padrão tempo para embarque:", `${statisticState.deviationPickUpTime}`)}
+        {showStatistic("Tempo médio de viagem:", `${statisticState.timeDelivery}m`)}
+        {showStatistic("Maior tempo de espera de viagem:", `${statisticState.longestDeliveryTime}m`)}
+        {showStatistic("Menor tempo de espera de viagem:", `${statisticState.shortestDeliveryTime}m`)}
+        {showStatistic("Desvio padrão tempo de viagem:", `${statisticState.deviationDeliveryTime}`)}
+      </div>
+    )
+  }
   return (
     <div className="statistics">
-      {showStatistic("Carros", 0)}
-      {showStatistic("Tempo médio para embarque", `${timePickUp}m`)}
-      {showStatistic("Tempo médio viagem", `${timeDelivery}m`)}
-      {showStatistic("Maior tempo de espera", `${longestPickUpTime}m`)}
-      {showStatistic("Desvio padrão tempo de espera", `${deviationPickUpTime}`)}
+      {showStatistic("T médio embarque", `${statisticState.timePickUp}m`)}
+      {showStatistic("T médio viagem", `${statisticState.timeDelivery}m`)}
+      {/* {showStatistic("Maior tempo de espera", `${longestPickUpTime}m`)}
+      {showStatistic("Desvio padrão tempo de espera", `${deviationPickUpTime}`)} */}
     </div>
   )
 }
