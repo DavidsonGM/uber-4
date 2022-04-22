@@ -10,6 +10,7 @@ import {
 } from '../../helpers/vectorDistance'
 import { cos, sin } from '../../helpers/trygonometry'
 import SortProperties from '../SortProperties'
+import CarDistanceProperties from '../CarDistanceProperties'
 
 const { highlightColor, clientHoverGrow } = theme
 
@@ -25,6 +26,8 @@ export default class Car extends Drawable {
 
   // Armazena referencia de qual carro esta selecionado
   static #selected = null
+
+  carDistanceProperties = new CarDistanceProperties()
 
   // Listeners
   static listeners = { select: [], liberate: [], new: [] }
@@ -97,6 +100,8 @@ export default class Car extends Drawable {
 
     // Invoca construtor pai
     super(id, properties)
+
+    this.carDistanceProperties.registerCreateCarDistance(id);
 
     Car.sortedCoords.register(this)
     this.onDestroy.push(() => Car.sortedCoords.remove(this))
@@ -218,6 +223,7 @@ export default class Car extends Drawable {
 
     // Descobre deslocamento do carro
     let carMovement = this.edge.mapSpeed * deltaTime
+    debugger;
 
     // Descobre o destino nesta aresta
     // Se esse for o ultimo node, vai ate o ponto de projecao
