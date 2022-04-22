@@ -1,18 +1,10 @@
 // O objetivo desta classe eh fornecer uma estrutura capaz de:
-// 1. Registrar novas instancias de um objeto especifico
-// 2. A cada instancia registrada, de acordo com sua configuracao, le as propriedades da instancia e as adiciona a heaps
-// 3. Fornece um vetor ordenado de cada uma dessas propriedades lidas
+// 1. Registrar todas as estatísticas de pickUp e Delivery do usuário
 
 export default class Statistics {
-    // Guarda os heaps das propriedades ordenadas
     static userTimeToPickUp = []
     static userTimeToDelivery = []
   
-    // Essa configuracao eh um objeto que deve seguir a seguinte sintaxe:
-    // Cada chave deste objeto deve ser o nome de uma das propriedades que vao ser lidas das instancias registradas
-    // As chaves devem apontar para um metodo que descreve como ordenar seus valores (eh exatamente o metodo que vai ser passado como parametro para o Heap)
-  
-    // Registra as propriedades desta instancia nas lsitas ordenadas
     static registerUserTimeToPickUp(timeToPickUp) {
       this.userTimeToPickUp.push(timeToPickUp);
       this.#raiseEvent('userTimeToPickUpListener', this.userTimeToPickUp)
@@ -23,7 +15,6 @@ export default class Statistics {
       this.#raiseEvent('userTimeToDeliveryListener', this.userTimeToDelivery)
     }
   
-    // Retorna a lista ordenada desta propriedade
     get() {
       return {
           userTimeToPickUp: this.userTimeToPickUp,
@@ -32,7 +23,6 @@ export default class Statistics {
       }
     }
   
-    // Apaga tudo
     clear() {
       this.createdAt = null;
       this.pickedUpAt = null;

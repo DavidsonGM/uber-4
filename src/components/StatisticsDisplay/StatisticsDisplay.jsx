@@ -15,7 +15,6 @@ export default function StatisticsDisplay({ sideMenu = false }) {
     deviationDeliveryTime: 0,
   });
 
-  // Se inscreve para manter o tempo atualizado
   useEffect(() => {
       userPickUpListener();
       userDeliveryListener();
@@ -124,8 +123,8 @@ export default function StatisticsDisplay({ sideMenu = false }) {
         {showStatistic("Menor tempo de espera para embarque:", `${statisticState.shortestPickUpTime}m`)}
         {showStatistic("Desvio padrão tempo para embarque:", `${statisticState.deviationPickUpTime}`)}
         {showStatistic("Tempo médio de viagem:", `${statisticState.timeDelivery}m`)}
-        {showStatistic("Maior tempo de espera de viagem:", `${statisticState.longestDeliveryTime}m`)}
-        {showStatistic("Menor tempo de espera de viagem:", `${statisticState.shortestDeliveryTime}m`)}
+        {showStatistic("Maior tempo de viagem:", `${statisticState.longestDeliveryTime}m`)}
+        {showStatistic("Menor tempo de viagem:", `${statisticState.shortestDeliveryTime}m`)}
         {showStatistic("Desvio padrão tempo de viagem:", `${statisticState.deviationDeliveryTime}`)}
       </div>
     )
@@ -134,8 +133,6 @@ export default function StatisticsDisplay({ sideMenu = false }) {
     <div className="statistics">
       {showStatistic("T médio embarque", `${statisticState.timePickUp}m`)}
       {showStatistic("T médio viagem", `${statisticState.timeDelivery}m`)}
-      {/* {showStatistic("Maior tempo de espera", `${longestPickUpTime}m`)}
-      {showStatistic("Desvio padrão tempo de espera", `${deviationPickUpTime}`)} */}
     </div>
   )
 }
