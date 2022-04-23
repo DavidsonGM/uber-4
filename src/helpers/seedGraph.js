@@ -28,15 +28,17 @@ export default function seedGraph(
       x: Math.random() * mapWidth - mapWidth / 2,
       y: Math.random() * mapHeight - mapHeight / 2,
     }
-
+    
     // Verifica se as coordenadas estao boas
     if (distantFromVertices)
       for (const vertex of Object.values(Vertex.instances)) {
-        while (getDistance(vertex, newCoords) < minDistanceBetweenVertices) {
+        let counter = 0;
+        while (getDistance(vertex, newCoords) < minDistanceBetweenVertices && counter < 10) {
           newCoords = {
             x: Math.random() * mapWidth - mapWidth / 2,
             y: Math.random() * mapHeight - mapHeight / 2,
           }
+          counter += 1;
         }
       }
 

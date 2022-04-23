@@ -6,6 +6,7 @@ import { CgSidebarOpen } from 'react-icons/cg'
 import { BiCopyright } from 'react-icons/bi'
 import { RiRoadMapFill, RiMapLine, RiGithubFill } from 'react-icons/ri'
 import Drawable from '../../classes/Drawables/Drawable'
+import StatisticsDisplay from '../StatisticsDisplay/StatisticsDisplay'
 
 const SideMenu = () => {
   const [showMenu, setShowMenu] = useState(false)
@@ -35,6 +36,7 @@ const SideMenu = () => {
             Gerar aleatóriamente
           </span>
         </div>
+        <StatisticsDisplay sideMenu/>
         <div className="credits">
           <h4>Créditos</h4>
           <span className="name">Estevan Alexander</span>

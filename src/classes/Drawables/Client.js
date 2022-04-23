@@ -13,6 +13,7 @@ import {
   displacePoint,
   getDistance,
 } from '../../helpers/vectorDistance'
+import UserTimeProperties from '../UserTimeProperties'
 
 const {
   clientHoverGrow,
@@ -43,6 +44,8 @@ export default class Client extends Drawable {
 
   // Listeners
   static listeners = { select: [], routeselect: [], delete: [], new: [] }
+
+  userTimeProperties = new UserTimeProperties()
 
   static get selected() {
     return this.#selected
@@ -217,6 +220,7 @@ export default class Client extends Drawable {
     // Invoca construtor pai
     super(id, Client.nameProperties(location, destination))
 
+    this.userTimeProperties.registerCreatedAt(id);
     // Registra no sorted coords
     Client.sortedCoords.register(this)
     this.onDestroy.push(() => Client.sortedCoords.remove(this))
@@ -367,6 +371,7 @@ export default class Client extends Drawable {
       },
 
       [inCar]: () => {
+        this.userTimeProperties.registerPickedUpAt(this.id);
         const { car } = this.selectedRoute.stepper
 
         // Ve a velocidade do carro
@@ -380,10 +385,10 @@ export default class Client extends Drawable {
         ) {
           // Atualiza coordenadas
           Object.assign(this, this.selectedRoute.projectionCoords)
-
           // Finaliza a rota e anda o resto
           this.routePhase = null
           this.selectedRoute = 'walk'
+          this.userTimeProperties.registerDeliveryAt(this.id);
 
           return
         }

@@ -6,6 +6,7 @@ import Coordinates from './components/Coordinates/Coordinates'
 import ErrorDisplay from './components/ErrorDisplay/ErrorDisplay'
 import SimulationControl from './components/SimulationControl/SimulationControl'
 import SideMenu from './components/SideMenu/SideMenu'
+import StatisticsDisplay from './components/StatisticsDisplay/StatisticsDisplay'
 
 // Icones
 import { FaUserPlus, FaPencilAlt, FaCarSide, FaPlus } from 'react-icons/fa'
@@ -28,6 +29,9 @@ export default function App() {
 
       {/* Botao de pausar e retomar simulacao */}
       <SimulationControl />
+
+      {/* Mostra estatísticas */}
+      <StatisticsDisplay />
 
       {/* Contem os botoes de acoes do mapa */}
       <div className="map actions">
