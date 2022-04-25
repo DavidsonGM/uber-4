@@ -220,7 +220,7 @@ export default class Client extends Drawable {
     // Invoca construtor pai
     super(id, Client.nameProperties(location, destination))
 
-    this.userTimeProperties.registerCreatedAt(id);
+    this.userTimeProperties.registerCreatedAt(this.id);
     // Registra no sorted coords
     Client.sortedCoords.register(this)
     this.onDestroy.push(() => Client.sortedCoords.remove(this))
